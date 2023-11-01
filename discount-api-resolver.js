@@ -12,7 +12,7 @@ module.exports = {
 						// ignore
 					}
 
-					return context.Discounts.Query.discounts(
+					return context.DiscountsAPI.Query.discounts(
 						{ root, args, context, info, selectionSet: "{ name discount }" }
 					)
 						.then((response) => {

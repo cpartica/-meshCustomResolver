@@ -2,10 +2,10 @@
   "meshConfig": {
     "sources": [
       {
-        "name": "{{env.APIName}}",
+        "name": "Venia",
         "handler": {
           "graphql": {
-            "endpoint": "{{env.commerceURL}}"
+            "endpoint": "https://venia.magento.com/graphql"
           }
         }
       },
@@ -28,7 +28,7 @@
       }
     ],
     "additionalResolvers": [
-      "./discount-api-resolver.js"
+      "discount-api-resolver.js"
     ]
   }
 }
