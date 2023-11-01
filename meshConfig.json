@@ -1,0 +1,35 @@
+{
+  "meshConfig": {
+    "sources": [
+      {
+        "name": "{{env.APIName}}",
+        "handler": {
+          "graphql": {
+            "endpoint": "{{env.commerceURL}}"
+          }
+        }
+      },
+      {
+        "name": "DiscountsAPI",
+        "handler": {
+          "JsonSchema": {
+            "baseUrl": "https://raw.githubusercontent.com/AdobeDocs/graphql-mesh-gateway/main/src/pages/_examples/discounts-api.json",
+            "operations": [
+              {
+                "type": "Query",
+                "field": "discounts",
+                "path": "/",
+                "method": "GET",
+                "responseSample": "https://raw.githubusercontent.com/AdobeDocs/graphql-mesh-gateway/main/src/pages/_examples/discounts-api.json"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "additionalResolvers": [
+      "./discount-api-resolver.js"
+    ]
+  }
+}
+
