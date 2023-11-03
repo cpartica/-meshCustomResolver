@@ -1,0 +1,58 @@
+{
+  "meshConfig": {
+    "sources": [
+      {
+        "name": "Venia",
+        "handler": {
+          "graphql": {
+            "endpoint": "https://venia.magento.com/graphql"
+          }
+        }
+      },
+      {
+        "name": "DiscountsAPI",
+        "handler": {
+          "JsonSchema": {
+            "baseUrl": "https://adobeioruntime.net/apis/283976-140beigesilkworm-stage/adl/demotest1",
+            "operations": [
+              {
+                "type": "Query",
+                "field": "discounts",
+                "path": "/",
+                "method": "GET",
+                "responseSample": "https://adobeioruntime.net/apis/283976-140beigesilkworm-stage/adl/demotest1"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "Pricing",
+        "handler": {
+          "JsonSchema": {
+            "baseUrl": "https://adobeioruntime.net/api/v1/web/283976-319tealcat-stage/default",
+            "operations": [
+              {
+                "type": "Query",
+                "field": "demo",
+                "path": "/demo?skus={args.skus}",
+                "method": "GET",
+                "argTypeMap": {
+                  "skus": {
+                    "type": "string"
+                  }
+                },
+                "responseSample": "./schemaSamples/pricing.json"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "additionalTypeDefs": "extend type ConfigurableProduct {\n    demoDetails: query_demo_products_items \n}\n",
+    "additionalResolvers": [
+      "./resolvers/discounts.js",
+      "./resolvers/pricing.js"
+    ]
+  }
+}

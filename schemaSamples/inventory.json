@@ -1,0 +1,10 @@
+{
+    "products": [
+        {
+            "location": "Warehouse A",
+            "quantity": 21,
+            "sku": "va",
+            "zipcode": 785585
+        }
+    ]
+}
