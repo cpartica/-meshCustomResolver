@@ -35,12 +35,12 @@
         "name": "Discounts",
         "handler": {
           "JsonSchema": {
-            "baseUrl": "https://adobeioruntime.net/apis/283976-140beigesilkworm-stage",
+            "baseUrl": "https://283976-140beigesilkworm-stage.adobeioruntime.net/api/v1/web/staging",
             "operations": [
               {
                 "type": "Query",
                 "field": "discounts",
-                "path": "/adl/demotest1",
+                "path": "/products-get?skus={args.skus}",
                 "method": "GET",
                 "responseSample": "./schemaSamples/discounts.json"
               }

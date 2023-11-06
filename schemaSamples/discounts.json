@@ -1,7 +1,6 @@
 [
-    {
-        "discount": 12,
-        "name": "Vitalia Top",
-        "sku": "VT10"
-    }
+{
+  "discount_percentage": 22,
+  "discounted_price": 76.44
+}
 ]

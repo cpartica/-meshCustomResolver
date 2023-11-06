@@ -1,81 +1,47 @@
-/*eslint no-unused-vars: "error"*/
 const resolvers = {
     ConfigurableProduct: {
-        discounted_price: {
-            selectionSet: /* GraphQL */ `{
-					sku
-					price_range { 
-						minimum_price { regular_price_value { value } }
-					}
-					discount { percent_off }
-			    }`,
-            resolve: (root, args, context, info) => {
-                let commercePrice = 0;
-
-                try {
-                    commercePrice = root.price_range.minimum_price.regular_price.value;
-                } catch (e) {
-                    commercePrice = 0;
-                }
-
-                let commerceDiscount = 0;
-
-                try {
-                    commerceDiscount = root.price_range.minimum_price.discount.percent_off;
-                } catch (e) {
-                    commerceDiscount = 0;
-                }
-
-                return context.Discounts.Query.discounts(
-                    {root, args, context, info, selectionSet: "{ sku discount }"}
-                )
-                    .then((response) => {
-                        const erpDiscountObj = response.find((discount) => discount.sku === root.sku);
-
-                        if (erpDiscountObj) {
-                            return commercePrice * ((100 - (commerceDiscount + erpDiscountObj.discount)) / 100);
-                        } else {
-                            return commercePrice;
-                        }
-                    })
-                    .catch(() => {
-                        return commercePrice;
-                    });
-            },
+		discounted_price: {
+            selectionSet: /* GraphQL */ `
+          {
+            discounted_price
+          }
+        `,
+            resolve(root, _args, context, info) {
+                return context.Discounts.Query.discounts({
+                    root,
+                    args: {
+                        skus: `${root.sku}`
+                    },
+                    context,
+                    info,
+                    selectionSet: "{ discounted_price }"
+                }).then((response) => {
+                    return response[0].discounted_price;
+                })
+            }
         },
         discount_percentage: {
-            selectionSet: /* GraphQL */ `{
-					sku
-					discount { percent_off }
-			    }`,
-            resolve: (root, args, context, info) => {
-                let commerceDiscount = 0;
-
-                try {
-                    commerceDiscount = root.price_range.minimum_price.discount.percent_off;
-                } catch (e) {
-                    commerceDiscount = 0;
-                }
-
-                return context.Discounts.Query.discounts(
-                    {root, args, context, info, selectionSet: "{ sku discount }"}
-                )
-                    .then((response) => {
-                        const erpDiscountObj = response.find((discount) => discount.sku === root.sku);
-
-                        if (erpDiscountObj) {
-                            return commerceDiscount + erpDiscountObj.discount;
-                        } else {
-                            return commerceDiscount;
-                        }
-                    })
-                    .catch(() => {
-                        return commerceDiscount;
-                    });
-            },
+            selectionSet: /* GraphQL */ `
+          {
+            discount_percentage
+          }
+        `,
+            resolve(root, _args, context, info) {
+                return context.Discounts.Query.discounts({
+                    root,
+                    args: {
+                        skus: `${root.sku}`
+                    },
+                    context,
+                    info,
+                    selectionSet: "{ discount_percentage }"
+                }).then((response) => {
+                    return response[0].discount_percentage;
+                })
+            }
         }
-    },
-};
+    }
+}
 
 module.exports = {
     resolvers

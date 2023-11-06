@@ -6,7 +6,7 @@ const resolvers = {
             sku
           }
         `,
-        resolve(root, _args, context, info) {
+        resolve(root, _args, context, info) { 
           return context.Inventory.Query.inventory({
             root,
             args: {
