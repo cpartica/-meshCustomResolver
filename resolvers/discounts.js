@@ -1,7 +1,7 @@
 /*eslint no-unused-vars: "error"*/
 const resolvers = {
     ConfigurableProduct: {
-        special_price: {
+        discounted_price: {
             selectionSet: /* GraphQL */ `{
 					sku
 					price_range { 
@@ -10,36 +10,67 @@ const resolvers = {
 					discount { percent_off }
 			    }`,
             resolve: (root, args, context, info) => {
-                let regularPriceValue = 0;
+                let commercePrice = 0;
 
                 try {
-                    regularPriceValue = root.price_range.minimum_price.regular_price.value;
+                    commercePrice = root.price_range.minimum_price.regular_price.value;
                 } catch (e) {
-                    regularPriceValue = 0;
+                    commercePrice = 0;
                 }
 
-                let additionalDiscountValue = 0;
+                let commerceDiscount = 0;
 
                 try {
-                    additionalDiscountValue = root.price_range.minimum_price.discount.percent_off;
+                    commerceDiscount = root.price_range.minimum_price.discount.percent_off;
                 } catch (e) {
-                    additionalDiscountValue = 0;
+                    commerceDiscount = 0;
                 }
 
                 return context.Discounts.Query.discounts(
                     {root, args, context, info, selectionSet: "{ sku discount }"}
                 )
                     .then((response) => {
-                        const discountObj = response.find((discount) => discount.sku === root.sku);
+                        const erpDiscountObj = response.find((discount) => discount.sku === root.sku);
 
-                        if (discountObj) {
-                            return regularPriceValue * ((100 - additionalDiscountValue - discountObj.discount) / 100);
+                        if (erpDiscountObj) {
+                            return commercePrice * ((100 - commerceDiscount - erpDiscountObj.discount) / 100);
                         } else {
-                            return regularPriceValue;
+                            return commercePrice;
                         }
                     })
                     .catch(() => {
-                        return null;
+                        return commercePrice;
+                    });
+            },
+        },
+        discount_percentage: {
+            selectionSet: /* GraphQL */ `{
+					sku
+					discount { percent_off }
+			    }`,
+            resolve: (root, args, context, info) => {
+                let commerceDiscount = 0;
+
+                try {
+                    commerceDiscount = root.price_range.minimum_price.discount.percent_off;
+                } catch (e) {
+                    commerceDiscount = 0;
+                }
+
+                return context.Discounts.Query.discounts(
+                    {root, args, context, info, selectionSet: "{ sku discount }"}
+                )
+                    .then((response) => {
+                        const erpDiscountObj = response.find((discount) => discount.sku === root.sku);
+
+                        if (erpDiscountObj) {
+                            return commerceDiscount + erpDiscountObj.discount;
+                        } else {
+                            return commerceDiscount;
+                        }
+                    })
+                    .catch(() => {
+                        return commerceDiscount;
                     });
             },
         }

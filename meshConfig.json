@@ -59,7 +59,7 @@
         ]
       }
     ],
-    "additionalTypeDefs": "extend interface ProductInterface { inventory_details: query_inventory_products_items } extend type ConfigurableProduct { inventory_details: query_inventory_products_items } extend type SimpleProduct { inventory_details: query_inventory_products_items } extend type VirtualProduct { inventory_details: query_inventory_products_items } extend type DownloadableProduct { inventory_details: query_inventory_products_items } extend type BundleProduct { inventory_details: query_inventory_products_items } extend type GiftCardProduct { inventory_details: query_inventory_products_items } extend type GroupedProduct { inventory_details: query_inventory_products_items }",
+    "additionalTypeDefs": "extend type ConfigurableProduct { discounted_price: Float \n discount_percentage: Float \n inventory_details: query_inventory_products_items }",
     "additionalResolvers": [
       "./resolvers/inventory.js",
       "./resolvers/discounts.js"
