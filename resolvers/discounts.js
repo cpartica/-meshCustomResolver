@@ -33,7 +33,7 @@ const resolvers = {
                         const erpDiscountObj = response.find((discount) => discount.sku === root.sku);
 
                         if (erpDiscountObj) {
-                            return commercePrice * ((100 - commerceDiscount - erpDiscountObj.discount) / 100);
+                            return commercePrice * ((100 - (commerceDiscount + erpDiscountObj.discount)) / 100);
                         } else {
                             return commercePrice;
                         }
